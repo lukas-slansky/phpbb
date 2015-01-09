@@ -270,6 +270,11 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 		$new[$config_key] = '';
 	}
 
+	if ($config_key == 'board_time')
+	{
+		$new[$config_key] = AUTOMATIC_DST_BOARD_TIME;
+	}
+
 	switch ($tpl_type[0])
 	{
 		case 'text':

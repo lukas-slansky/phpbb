@@ -99,6 +99,7 @@ require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 
+require($phpbb_root_path . 'includes/automatic_dst.' . $phpEx);
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
 
@@ -117,6 +118,16 @@ unset($dbpasswd);
 
 // Grab global variables, re-cache if necessary
 $config = $cache->obtain_config();
+
+// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+if (empty($phpbb_seo)) {
+	if (!class_exists('phpbb_seo' /*, false*/)) {
+		require($phpbb_root_path . 'phpbb_seo/phpbb_seo_class.'.$phpEx);
+	}
+	$phpbb_seo = new phpbb_seo();
+	@define('PHPBB_USE_BOARD_URL_PATH', true);
+}
+// www.phpBB-SEO.com SEO TOOLKIT END
 
 // Add own hook handler
 require($phpbb_root_path . 'includes/hooks/index.' . $phpEx);

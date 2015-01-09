@@ -1,0 +1,6 @@
+[submodule "phpBB/rest/phpCAS"]
+	path = phpBB/rest/phpCAS
+	url = https://github.com/Jasig/phpCAS.git
+[submodule "phpBB/includes/auth/CAS"]
+	path = phpBB/includes/auth/CAS
+	url = https://github.com/Jasig/phpCAS.git

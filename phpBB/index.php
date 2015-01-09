@@ -24,6 +24,9 @@ include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup('viewforum');
+if ($user->data['user_id'] == ANONYMOUS) {
+	redirect('/ucp.php?mode=login');
+}
 
 display_forums('', $config['load_moderators']);
 
@@ -72,7 +75,11 @@ while ($row = $db->sql_fetchrow($result))
 	}
 	else
 	{
-		$legend[] = '<a' . $colour_text . ' href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . $group_name . '</a>';
+		// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+		$phpbb_seo->prepare_url('group', $row['group_name'], $row['group_id']);
+		// www.phpBB-SEO.com SEO TOOLKIT END
+
+    $legend[] = '<a' . $colour_text . ' href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . $group_name . '</a>';
 	}
 }
 $db->sql_freeresult($result);

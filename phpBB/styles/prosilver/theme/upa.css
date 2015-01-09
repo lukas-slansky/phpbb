@@ -1,0 +1,177 @@
+﻿/* $Id: upa.css 66 2013-02-18 08:23:08Z lusl0338 $ */
+
+form#login input.inputbox {
+  display: none;
+}
+
+html, body, h2, h3 {
+  color: black;
+}
+
+h1 {
+  color: white;
+}
+
+.headerbar {
+  background-color: #ED1C24;
+  background-image: url("{T_THEME_PATH}/images/upa/bg_header.gif");
+}
+
+.navbar {
+  background-color: #D0D0D0;
+}
+
+.forabg {
+  background-color: #AF0E14;
+  background-image: url("{T_THEME_PATH}/images/upa/bg_list.gif");
+}
+
+.forumbg {
+  background-color: #ED1C24;
+  background-image: url("{T_THEME_PATH}/images/upa/bg_header.gif");
+}
+
+.panel {
+  background-color: #D0D0D0;
+  color: black;
+}
+
+.bg1	{
+  background-color: #D0D0D0;
+}
+
+.bg2	{
+  background-color: #E0E0E0;
+}
+
+.bg3	{
+  background-color: #F7A4A7;
+}
+
+table.table1 tbody tr:hover, table.table1 tbody tr.hover {
+	background-color: #FFE6EB;
+}
+
+table.table1 td {
+  color: #000000;
+}
+
+dl.details dd {
+  color: #000000;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: #000000;
+}
+
+#search-box a:hover, .navbg a:hover, .forumbg .header a:hover, .forabg .header a:hover, th a:hover {
+  color: #FFFFFF;
+}
+
+#search-box a:active, .navbg a:active, .forumbg .header a:active, .forabg .header a:active, th a:active {
+  color: #FFFFFF;
+}
+
+a.forumtitle {
+  color: #000000;
+}
+
+a.forumtitle:hover {
+  color: #000000;
+}
+
+a.forumtitle:active {
+  color: #000000;
+}
+
+a.topictitle {
+  color: #000000;
+}
+
+a.topictitle:hover {
+  color: #000000;
+}
+
+a.topictitle:active {
+  color: #000000;
+}
+.postprofile a:link, .postprofile a:visited, .postprofile dt.author a {
+  color: #000000;
+}
+.postprofile a:hover, .postprofile dt.author a:hover {
+  color: #808080;
+}
+
+.postprofile a:active {
+  color: #000000;
+}
+
+.search .postprofile a {
+  color: #000000;
+}
+
+ul.forums {
+  background-color: #F0F0F0;
+  background-image: url("{T_THEME_PATH}/images/upa/gradient.gif");
+}
+
+ul.topiclist li {
+  color: #000000;
+}
+
+li.row {
+  border-bottom-color: #AF0E14;
+}
+
+li.row:hover {
+  background-color: #FFE6EB;
+}
+.content h2, .panel h2 {
+  color: #000000;
+}
+
+#tabs a {
+	background-image: url("{T_THEME_PATH}/images/upa/bg_tabs1.gif");
+}
+
+#tabs a span {
+  background-image: url("{T_THEME_PATH}/images/upa/bg_tabs2.gif");
+  color: #000000;
+}
+
+#navigation a {
+  background-color: #D6ADAE;
+  background-image: url("{T_THEME_PATH}/images/upa/bg_menu.gif");
+}
+
+.rtl #navigation a {
+  background-image: url("{T_THEME_PATH}/images/upa/bg_menu_rtl.gif");
+}
+dl.mini dt {
+  color: #000000;
+}
+
+label {
+  color: #000000;
+}
+
+.postlink, .postlink:visited, .postlink:active, .postlink:hover {
+	color: black;
+  background-color: inherit;
+	border-bottom-color: black;
+}
+
+ul.topiclist.forums .lastpost,
+ul.topiclist.forums .lastpost a,
+ul.topiclist.forums .lastpost a:link,
+ul.topiclist.forums .lastpost a:visited,
+ul.topiclist.forums .lastpost a:hover,
+ul.topiclist.forums .lastpost a:active,
+ul.topiclist.topics .lastpost,
+ul.topiclist.topics .lastpost a,
+ul.topiclist.topics .lastpost a:link,
+ul.topiclist.topics .lastpost a:visited,
+ul.topiclist.topics .lastpost a:hover,
+ul.topiclist.topics .lastpost a:active {
+  color: #444444;
+}

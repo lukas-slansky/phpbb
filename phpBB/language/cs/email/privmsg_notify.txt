@@ -1,0 +1,15 @@
+Subject: Nová soukromá zpráva
+
+Dobrý den {USERNAME},
+
+obdrželi jste novou soukromou zprávu od "{AUTHOR_NAME}" na fóru "{SITENAME}" s následujícím předmětem:
+
+{SUBJECT}
+
+Celou zprávu si můžete přečíst, když kliknete na následující odkaz:
+
+{U_VIEW_MESSAGE}
+
+Nastavení zasílání e-mailů si můžete nastavit v uživatelském panelu.
+
+{EMAIL_SIG}

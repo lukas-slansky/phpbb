@@ -1248,7 +1248,7 @@ input.disabled {
 }*/
 
 .clearfix, #tabs, .row, #content, fieldset dl, #page-body {
-	height: 1%;
+/*LSL	height: 1%; */
 	overflow: hidden;
 }
 

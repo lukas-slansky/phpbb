@@ -763,6 +763,10 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	global $template, $cache, $user;
 	global $extensions, $config, $phpbb_root_path, $phpEx;
 
+	// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+	global $phpbb_seo;
+	// www.phpBB-SEO.com SEO TOOLKIT END
+
 	//
 	$compiled_attachments = array();
 
@@ -937,7 +941,25 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				$display_cat = ATTACHMENT_CATEGORY_NONE;
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id']);
+			// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+			//$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id']);
+			$download_link = "{$phpbb_root_path}download/file.$phpEx?id=" . $attachment['attach_id'];
+			$comment_clean = preg_replace('`<[^>]*>`Ui', ' ', $comment);
+			$block_array += array(
+				'COMMENT_CLEAN'		=> $comment_clean,
+			);
+			if (!empty($phpbb_seo->seo_opt['rewrite_files'])) {
+				if (empty($phpbb_seo->seo_url['file'][$attachment['attach_id']])) {
+					if (($_pos = utf8_strpos($comment, '<br')) !== false) {
+						$comment_url = strip_tags(utf8_substr($comment, 0, $_pos));
+					} else {
+						$comment_url = $comment_clean;
+					}
+					$comment_url = utf8_strlen($comment_url) > 60 ? utf8_substr($comment_url, 0, 60) : $comment_url;
+					$phpbb_seo->seo_url['file'][$attachment['attach_id']] = $phpbb_seo->format_url($comment_url, $phpbb_seo->seo_static['file'][$display_cat]);
+				}
+			}
+			// www.phpBB-SEO.com SEO TOOLKIT END
 
 			switch ($display_cat)
 			{
@@ -1013,9 +1035,10 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 						'S_FLASH_FILE'	=> true,
 						'WIDTH'			=> $width,
 						'HEIGHT'		=> $height,
-						'U_VIEW_LINK'	=> $download_link . '&amp;view=1',
+						// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+						'U_VIEW_LINK'	=> append_sid($download_link . '&amp;view=1'),
+						// www.phpBB-SEO.com SEO TOOLKIT END
 					);
-
 					// Viewed/Heared File ... update the download count
 					$update_count[] = $attachment['attach_id'];
 				break;
@@ -1028,6 +1051,10 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 					);
 				break;
 			}
+
+			// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+			$download_link = append_sid($download_link);
+			// www.phpBB-SEO.com SEO TOOLKIT END
 
 			$l_download_count = (!isset($attachment['download_count']) || $attachment['download_count'] == 0) ? $user->lang[$l_downloaded_viewed . '_NONE'] : (($attachment['download_count'] == 1) ? sprintf($user->lang[$l_downloaded_viewed], $attachment['download_count']) : sprintf($user->lang[$l_downloaded_viewed . 'S'], $attachment['download_count']));
 
@@ -1222,12 +1249,23 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 			{
 				$username = ($user_id && $user_id != ANONYMOUS) ? $username : ((!empty($guest_username)) ? $guest_username : $user->lang['GUEST']);
 			}
-
+      
 			// Return username
 			if ($mode == 'username')
 			{
 				return $username;
 			}
+
+      if ($user_id && $user_id != ANONYMOUS)
+      {
+        $sql = 'SELECT * FROM ' . PROFILE_FIELDS_DATA_TABLE . ' WHERE user_id = '.$user_id;
+        global $db;
+        $result = $db->sql_query($sql);
+        if ($profile = $db->sql_fetchrow($result))
+        {
+          $username = $profile['pf_jmeno'] . ' (' . $username . ')';
+        }
+      }
 
 		// no break;
 
@@ -1237,7 +1275,16 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 			// For anonymous the link leads to a login page.
 			if ($user_id && $user_id != ANONYMOUS && ($user->data['user_id'] == ANONYMOUS || $auth->acl_get('u_viewprofile')))
 			{
-				$profile_url = ($custom_profile_url !== false) ? $custom_profile_url . '&amp;u=' . (int) $user_id : str_replace(array('={USER_ID}', '=%7BUSER_ID%7D'), '=' . (int) $user_id, $_profile_cache['base_url']);
+				// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+				// $profile_url = ($custom_profile_url !== false) ? $custom_profile_url . '&amp;u=' . (int) $user_id : str_replace(array('={USER_ID}', '=%7BUSER_ID%7D'), '=' . (int) $user_id, $_profile_cache['base_url']);
+				global $phpbb_seo, $phpbb_root_path, $phpEx;
+				$phpbb_seo->set_user_url( $username, $user_id );
+				if ($custom_profile_url !== false) {
+					$profile_url = reapply_sid($custom_profile_url . (strpos($custom_profile_url, '?') !== false ?  '&amp;' : '?' ) . 'u=' . (int) $user_id);
+				} else {
+					$profile_url = append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u=' . (int) $user_id);
+				}
+				// www.phpBB-SEO.com SEO TOOLKIT END
 			}
 			else
 			{

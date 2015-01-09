@@ -17,6 +17,17 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
+// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+if (empty($_REQUEST['f'])) {
+	$phpbb_seo->get_forum_id($session_forum_id);
+	if ($session_forum_id == 0) {
+		send_status_line(404, 'Not Found');
+	} else {
+		$_REQUEST['f'] = (int) $session_forum_id;
+	}
+}
+// www.phpBB-SEO.com SEO TOOLKIT END
+
 // Start session
 $user->session_begin();
 $auth->acl($user->data);
@@ -70,6 +81,9 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
+// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+$phpbb_seo->set_url($forum_data['forum_name'], $forum_data['forum_id'], 'forum');
+// www.phpBB-SEO.com SEO TOOLKIT END
 
 // Configure style, language, etc.
 $user->setup('viewforum', $forum_data['forum_style']);
@@ -115,6 +129,13 @@ if ($forum_data['forum_type'] == FORUM_LINK && $forum_data['forum_link'])
 	redirect($forum_data['forum_link'], false, true);
 	return;
 }
+
+/* LSL */
+if ($forum_id && isset($user->data['user_id']) && $user->data['user_id'] && ($user->data['group_id']>=2) && ($user->data['group_id']<=7)  && ($user->data['group_id']!=6)) {
+  $sql = 'REPLACE INTO ' . $table_prefix . 'last_access SET forum_id='.$forum_id.', user_id='.$user->data['user_id'].', last_access='.time();
+  $db->sql_query($sql);
+}
+/* /LSL */
 
 // Build navigation links
 generate_forum_nav($forum_data);
@@ -619,6 +640,20 @@ if (sizeof($topic_list))
 		$row = &$rowset[$topic_id];
 
 		$topic_forum_id = ($row['forum_id']) ? (int) $row['forum_id'] : $forum_id;
+
+		// www.phpBB-SEO.com SEO TOOLKIT BEGIN
+		if (!empty($row['topic_url'])) {
+			$phpbb_seo->prepare_iurl($row, 'topic', '');
+		} else {
+			if ($phpbb_seo->modrtype > 2) {
+				$row['topic_title'] = censor_text($row['topic_title']);
+			}
+			$parent_forum = $row['topic_type'] == POST_GLOBAL ? $phpbb_seo->seo_static['global_announce'] : (!empty($phpbb_seo->seo_url['forum'][$topic_forum_id]) ? $phpbb_seo->seo_url['forum'][$topic_forum_id] : false);
+			if ($parent_forum) {
+				$phpbb_seo->prepare_iurl($row, 'topic', $parent_forum);
+			}
+		}
+		// www.phpBB-SEO.com SEO TOOLKIT END
 
 		// This will allow the style designer to output a different header
 		// or even separate the list of announcements from sticky and normal topics
